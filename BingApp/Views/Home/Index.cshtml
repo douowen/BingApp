@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+<html ng-app="BingApp" ng-controller="BingShareController">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title ng-bind="title"></title>
+    <base href="/">
+    @Styles.Render("~/Content/css")
+    
+</head>
+<body >
+    <header id="header">
+        <a href="/"><img src="~/Content/Image/Bing-icon.png" /></a>
+        <div class="headerNav">
+            <a ng-class="{active:isActive('/search')}" href="/search">Web</a>
+            <a ng-class="{active:isActive('/images')}" ng-mouseover="mouseOverNav('images')" ng-mouseleave="mouseLeaveNav()" href="/images">Images</a>
+            <a ng-class="{active:isActive('/videos')}" ng-mouseover="mouseOverNav('videos')" ng-mouseleave="mouseLeaveNav()" href="/videos">Videos</a>
+            <a ng-class="{active:isActive('/maps')}" ng-mouseover="mouseOverNav('maps')" ng-mouseleave="mouseLeaveNav()" href="/maps">Maps</a>
+            <a ng-class="{active:isActive('/news')}" ng-mouseover="mouseOverNav('news')" ng-mouseleave="mouseLeaveNav()" href="/news">News</a>
+            <a ng-class="{active:isActive('/explore')}" href="/explore">Explore</a>
+            <a ng-class="{active:isActive('/history')}" href="/history">Search History</a>
+            <div style="color: #acacac;">|</div>
+            <a target="_blank" href="https://www.msn.com">MSN</a>
+            <a target="_blank" href="https://www.office.com">Office Online</a>
+            <a target="_blank" href="https://www.outlook.com">Outlook.com</a>
+        </div>
+        <div class="headerUser"></div>
+    </header>
+    <nav ng-show="showNav" class="ng-hide">
+
+    </nav>
+    <div id="bingContainer" ng-view>
+
+    </div>
+    <footer></footer>
+    @Scripts.Render("~/bundles/angular")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bingapp")
+</body>
+</html>
