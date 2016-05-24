@@ -3,3 +3,10 @@
     <input type="search" class="home-search-box" ng-model="keyword" autofocus />
     <img ng-click="goSearch(keyword, '/search')" src="/Content/Image/search-icon.png" alt="search icon" class="home-search-icon" />
 </div>
+<div class="sharedContentContainer ng-hide" ng-show="showResults">
+    <div class="webRow" ng-repeat="row in searchResults">
+        <a ng-href="{{row.url}}">{{row.title}}</a>
+        <span>{{row.url}}</span>
+        <div>{{row.descr}}</div>
+    </div>
+</div>

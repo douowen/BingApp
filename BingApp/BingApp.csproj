@@ -181,11 +181,19 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\images.css" />
     <Content Include="Content\Image\Bing-icon.png" />
     <Content Include="Content\Image\bing-logo-home.png" />
     <Content Include="Content\Image\BingWallpaper.jpg" />
     <Content Include="Content\Image\bing_favicon.ico" />
+    <Content Include="Content\Image\close-icon.png" />
+    <Content Include="Content\Image\imageSample1.jpg" />
+    <Content Include="Content\Image\imageSample2.jpg" />
+    <Content Include="Content\Image\imageSample3.jpg" />
     <Content Include="Content\Image\search-icon.png" />
+    <Content Include="Content\news.css" />
+    <Content Include="Content\videos.css" />
+    <Content Include="Content\web.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />

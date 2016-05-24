@@ -1,5 +1,16 @@
-﻿<div id="bingImages" class="homeSearchContainer">
-    <img class="bing-home-icon" src="/Content/Image/bing-logo-home.png" alt="home search" />
-    <input ng-model="keyword" type="search" class="home-search-box" autofocus />
-    <img ng-click="goSearch(keyword, '/images')" src="/Content/Image/search-icon.png" alt="search icon" class="home-search-icon" />
+﻿<div id="bingImages">
+    <div class="bingImageOverlay ng-hide" ng-show="showOverlay">
+        <img class="detailedImageClose" ng-click="closeImageOverlay()" src="/Content/Image/close-icon.png" />
+        <img class="detailedImage" ng-src="{{detailImageSrc}}" />
+    </div>
+    <div class="homeSearchContainer">
+        <img class="bing-home-icon" src="/Content/Image/bing-logo-home.png" alt="home search" />
+        <input ng-model="keyword" type="search" class="home-search-box" autofocus />
+        <img ng-click="goSearch(keyword, '/images')" src="/Content/Image/search-icon.png" alt="search icon" class="home-search-icon" />
+    </div>
+    <div class="sharedContentContainer ng-hide" ng-show="showResults">
+        <div class="imageResultContainer">
+            <img ng-repeat="item in imagesResults" ng-click="openImage(item.src)" ng-src="{{item.src}}" />
+        </div>
+    </div>
 </div>

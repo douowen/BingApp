@@ -55,21 +55,69 @@ BingApp.config(['$routeProvider', '$locationProvider', function ($routeProvider,
     });
 }]);
 
-BingApp.controller('HomeController', ['$scope', '$location', '$rootScope', '$timeout', function HomeController($scope, $location, $rootScope, $timeout) {
+BingApp.controller('HomeController', ['$scope', '$location', '$rootScope', '$timeout',
+    function HomeController($scope, $location, $rootScope, $timeout) {
+    var afterFirstClick = false;
+    $scope.showOverlay = false;
     $scope.searchItem = "";
     $scope.goSearch = function (keyword, path) {
-        $scope.searchItem = angular.copy(keyword);
-        $timeout(function () {
-            $rootScope.$broadcast('getSearchKeyword', { item: keyword });
-        }, 100);
-        $location.path(path).search({ keyword: keyword });
+        if (keyword.length > 0) {
+            $scope.searchItem = angular.copy(keyword);
+            $timeout(function () {
+                $rootScope.$broadcast('getSearchKeyword', { item: keyword });
+            }, 100);
+            $location.path(path).search({ keyword: keyword });
+        }
     };
+
+    $scope.clickInput = function () {
+        afterFirstClick = true;
+        $scope.showOverlay = true;
+    };
+
+    $scope.focusInput = function () {
+        if (afterFirstClick) {
+            $scope.showOverlay = true;
+        }
+    };
+
+    $scope.blurInput = function () {
+        $scope.showOverlay = false;
+    };
+    
 }]);
 
-BingApp.controller('WebController', ['$scope', '$location', '$rootScope', '$timeout',
-    function WebController($scope, $location, $rootScope, $timeout) {
+BingApp.controller('WebController', ['$scope', '$location', '$rootScope', '$timeout', 'WebResultService',
+    function WebController($scope, $location, $rootScope, $timeout, WebResultService) {
+        //Get searchResults data by calling the http get function in WebResultService
+        //WebResultService.getWebSearchResults(args, function (response) {
+        //    $scope.searchResults = response.data;
+        //});
+        $scope.showResults = false;
+
+        $scope.searchResults = [
+            {
+                title: 'Microsoft Office',
+                url: 'https://products.office.com', 
+                descr: 'From desk to web for Macs and PCs, Office delivers the tools to get work done.'
+            },
+            {
+                title: 'Microsoft Windows Update',
+                url: 'https://windowsupdate.microsoft.com',
+                descr: 'Latest bug fixes for Microsoft Windows, including fixes for some possible Dos attacks.'
+
+            },
+             {
+                 title: 'Microsoft - Official Home Page',
+                 url: 'https://www.microsoft.com',
+                 descr: 'At Microsoft our mission and values are to help people and businesses throughout the world realize their full potential.'
+             },
+
+        ];
+
     $rootScope.$on('getSearchKeyword', function (event, args) {
         $scope.keyword = args.item;
+        $scope.showResults = true;
     });
     
     $scope.goSearch = function (keyword, path) {
@@ -80,14 +128,29 @@ BingApp.controller('WebController', ['$scope', '$location', '$rootScope', '$time
     };
 
     $scope.goHome = function () {
-        $location.path('/');
+        $location.path('/').search('');
     };
 }]);
 
 BingApp.controller('ImagesController', ['$scope', '$location', '$rootScope', '$timeout',
     function ImagesController($scope, $location, $rootScope, $timeout) {
+        $scope.showResults = false;
+        $scope.detailImageSrc = "";
+        $scope.showOverlay = false;
+        $scope.imagesResults = [
+            {
+                src: '/Content/Image/imageSample1.jpg'
+            },
+            {
+                src: '/Content/Image/imageSample2.jpg'
+            },
+            {
+                src: '/Content/Image/imageSample3.jpg'
+            }
+        ];
         $scope.$on('getImageKeyword', function (event, args) {
             $scope.keyword = args.item;
+            $scope.showResults = true;
         });
 
         $scope.goSearch = function (keyword, path) {
@@ -98,10 +161,20 @@ BingApp.controller('ImagesController', ['$scope', '$location', '$rootScope', '$t
         };
 
         $scope.goHome = function () {
-            $location.path('/');
+            $location.path('/').search('');
+        };
+
+        $scope.openImage = function (src) {
+            $scope.detailImageSrc = src;
+            $scope.showOverlay = true;
+        };
+
+        $scope.closeImageOverlay = function () {
+            $scope.showOverlay = false;
         };
     }]);
 
+/* Auto focus on input search box */
 BingApp.directive('autofocus', ['$timeout', function ($timeout) {
     return {
         restrict: 'A',
@@ -112,3 +185,35 @@ BingApp.directive('autofocus', ['$timeout', function ($timeout) {
         }
     }
 }]);
+
+BingApp.directive('hitEnter', function () {
+    return function (scope, element, attrs) {
+        element.bind("keydown keypress", function (event) {
+            if (event.which === 13) {
+                scope.$apply(function () {
+                    scope.$eval(attrs.hitEnter);
+                });
+                event.preventDefault();
+            }
+        });
+    };
+});
+
+/* Bing App Services */
+/* I made the fake service for the sake of getting search results json data by calling http get to
+   specific API functions*/
+BingApp.service('WebResultService', ['$http', function WebResultService($http) {
+    this.getWebSearchResults = function (args, callback) {
+        $http.get('', { params: { args: args } }).then(callback);
+    };
+
+    this.getImagesSearchResults = function (args) {
+        $http.get('', { params: { args: args } }).then(callback);
+    };
+
+    this.getVideosSearchResults = function (args) {
+        $http.get('', { params: { args: args } }).then(callback);
+    };
+}]);
+
+

@@ -1,11 +1,12 @@
 ﻿<div id="bingHome">
+    <div ng-show="showOverlay" class="homeOverlay ng-hide"></div>
     <div class="homeBackground">
         <img src="/Content/Image/BingWallpaper.jpg" alt="background imge" style="min-width: 960px"/>
     </div>
     <div class="homeMain">
         <div class="homeSearchContainer">
             <img class="bing-home-icon" src="/Content/Image/bing-logo-home.png" alt="home search"/>
-            <input type="search" class="home-search-box" ng-model="keyword" autofocus/>
+            <input type="search" class="home-search-box" ng-click="clickInput()" hit-enter="goSearch(keyword, '/search')" ng-focus="focusInput()" ng-blur="blurInput()" ng-model="keyword" autofocus/>
             <img ng-click="goSearch(keyword, '/search')" src="/Content/Image/search-icon.png" alt="search icon" class="home-search-icon" />
         </div>
     </div>

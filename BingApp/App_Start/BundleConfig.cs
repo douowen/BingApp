@@ -23,7 +23,11 @@ namespace BingApp
                 .Include("~/Scripts/BingApp.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/site.css"));
+                      "~/Content/site.css",
+                      "~/Content/web.css",
+                      "~/Content/images.css",
+                      "~/Content/videos.css",
+                      "~/Content/news.css"));
 
             BundleTable.EnableOptimizations = true;
         }
