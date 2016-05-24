@@ -37,6 +37,8 @@
 
 .imageResultContainer {
     overflow: hidden;
+    display: -webkit-flex;
+    display: -moz-flex;
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-start;

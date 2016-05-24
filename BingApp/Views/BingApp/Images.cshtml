@@ -5,7 +5,7 @@
     </div>
     <div class="homeSearchContainer">
         <img class="bing-home-icon" src="/Content/Image/bing-logo-home.png" alt="home search" />
-        <input ng-model="keyword" type="search" class="home-search-box" autofocus />
+        <input ng-model="keyword" type="search" class="home-search-box" hit-enter="goSearch(keyword, '/images')" autofocus />
         <img ng-click="goSearch(keyword, '/images')" src="/Content/Image/search-icon.png" alt="search icon" class="home-search-icon" />
     </div>
     <div class="sharedContentContainer ng-hide" ng-show="showResults">

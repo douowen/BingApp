@@ -15,15 +15,12 @@ namespace BingApp
                         "~/Scripts/External/angular.js",
                         "~/Scripts/External/angular-route.js"));
 
-            bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
-                        "~/Scripts/External/jquery.validate*"));
-
             bundles.Add(new ScriptBundle("~/bundles/bingapp")
-                .IncludeDirectory("~/Scripts/Internal", "*.js")
+                //.IncludeDirectory("~/Scripts/Internal", "*.js")
                 .Include("~/Scripts/BingApp.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/site.css",
+                      "~/Content/Site.css",
                       "~/Content/web.css",
                       "~/Content/images.css",
                       "~/Content/videos.css",

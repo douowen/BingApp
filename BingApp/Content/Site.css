@@ -9,6 +9,8 @@
 }
 
 *, *:before, *:after {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
     box-sizing:border-box;
 }
 
@@ -20,6 +22,8 @@ header {
     width: 100%;
     padding: 14px 0;
     height: 71px;
+    display: -webkit-flex;
+    display: -moz-flex;
     display: flex;
     flex-wrap: nowrap;
     padding-left: 31px;
@@ -29,6 +33,8 @@ header {
 .headerNav {
     width: 800.17px;
     height: 43px;
+    display: -webkit-flex;
+    display: -moz-flex;
     display: flex;
     justify-content: space-between;
     padding-top: 12px;
@@ -64,6 +70,8 @@ nav {
     height: 38px;
     width: 100%;
     background-color: rgba(0,0,0,.5);
+    display: -webkit-flex;
+    display: -moz-flex;
     display: flex;
     top: 71px;
     z-index: 10;
@@ -141,6 +149,8 @@ footer {
 .homeSearchContainer { /* Shared with all the routes */
     width: 800px;
     overflow: hidden;
+    display: -webkit-flex;
+    display: -moz-flex;
     display: flex;
     justify-content: flex-start;
     align-items: center;

@@ -121,10 +121,12 @@ BingApp.controller('WebController', ['$scope', '$location', '$rootScope', '$time
     });
     
     $scope.goSearch = function (keyword, path) {
-        $location.path(path).search({ keyword: keyword });
-        $timeout(function () {
-            $rootScope.$broadcast('getSearchKeyword', { item: keyword });
-        }, 100);
+        if (keyword.length > 0) {
+            $location.path(path).search({ keyword: keyword });
+            $timeout(function () {
+                $rootScope.$broadcast('getSearchKeyword', { item: keyword });
+            }, 100);
+        }
     };
 
     $scope.goHome = function () {
@@ -154,10 +156,12 @@ BingApp.controller('ImagesController', ['$scope', '$location', '$rootScope', '$t
         });
 
         $scope.goSearch = function (keyword, path) {
-            $location.path(path).search({ keyword: keyword });
-            $timeout(function () {
-                $rootScope.$broadcast('getImageKeyword', { item: keyword });
-            }, 100);
+            if (keyword.length > 0) {
+                $location.path(path).search({ keyword: keyword });
+                $timeout(function () {
+                    $rootScope.$broadcast('getImageKeyword', { item: keyword });
+                }, 100);
+            }
         };
 
         $scope.goHome = function () {
