@@ -14,10 +14,12 @@ BingApp.controller('BingShareController', ['$scope', '$location', function BingS
     $scope.mouseLeaveNav = function () {
         $scope.showNav = false;
     }
+
+    $location.path('/').search('');
 }]);
 
 BingApp.config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
-    $locationProvider.html5Mode(true);
+    $locationProvider.hashPrefix('!').html5Mode(true);
     $routeProvider.
     when('/', {
         templateUrl: 'bingApp/home',
@@ -53,6 +55,60 @@ BingApp.config(['$routeProvider', '$locationProvider', function ($routeProvider,
     });
 }]);
 
-BingApp.controller('HomeController', ['$scope', function HomeController($scope) {
+BingApp.controller('HomeController', ['$scope', '$location', '$rootScope', '$timeout', function HomeController($scope, $location, $rootScope, $timeout) {
+    $scope.searchItem = "";
+    $scope.goSearch = function (keyword, path) {
+        $scope.searchItem = angular.copy(keyword);
+        $timeout(function () {
+            $rootScope.$broadcast('getSearchKeyword', { item: keyword });
+        }, 100);
+        $location.path(path).search({ keyword: keyword });
+    };
+}]);
 
+BingApp.controller('WebController', ['$scope', '$location', '$rootScope', '$timeout',
+    function WebController($scope, $location, $rootScope, $timeout) {
+    $rootScope.$on('getSearchKeyword', function (event, args) {
+        $scope.keyword = args.item;
+    });
+    
+    $scope.goSearch = function (keyword, path) {
+        $location.path(path).search({ keyword: keyword });
+        $timeout(function () {
+            $rootScope.$broadcast('getSearchKeyword', { item: keyword });
+        }, 100);
+    };
+
+    $scope.goHome = function () {
+        $location.path('/');
+    };
+}]);
+
+BingApp.controller('ImagesController', ['$scope', '$location', '$rootScope', '$timeout',
+    function ImagesController($scope, $location, $rootScope, $timeout) {
+        $scope.$on('getImageKeyword', function (event, args) {
+            $scope.keyword = args.item;
+        });
+
+        $scope.goSearch = function (keyword, path) {
+            $location.path(path).search({ keyword: keyword });
+            $timeout(function () {
+                $rootScope.$broadcast('getImageKeyword', { item: keyword });
+            }, 100);
+        };
+
+        $scope.goHome = function () {
+            $location.path('/');
+        };
+    }]);
+
+BingApp.directive('autofocus', ['$timeout', function ($timeout) {
+    return {
+        restrict: 'A',
+        link: function ($scope, $element) {
+            $timeout(function () {
+                $element[0].focus();
+            });
+        }
+    }
 }]);

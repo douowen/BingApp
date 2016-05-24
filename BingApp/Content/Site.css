@@ -55,7 +55,6 @@ header img {
 .active {
     color: #fff !important;
     border-bottom: 2px solid #fff;
-    pointer-events: none;
 }
 
 /* Bing Subnav */
@@ -84,6 +83,11 @@ footer {
     height: 43px;
     background-color: #333;
     z-index: 10;
+    font-size: 12px;
+    text-align: center;
+    padding-top: 14px;
+    color: #acacac;
+    min-width: 768px;
 }
 
 /* Bing Home */
@@ -133,6 +137,13 @@ footer {
     width: 182px;
     height: 170px;
     margin-right: 10px;
+}
+
+#bingWeb .bing-home-icon,
+#bingImages .bing-home-icon,
+#bingNews .bing-home-icon,
+#bingVideos .bing-home-icon {
+    cursor: pointer;
 }
 
 .homeSearchContainer div input {

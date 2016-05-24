@@ -184,13 +184,14 @@
     <Content Include="Content\Image\Bing-icon.png" />
     <Content Include="Content\Image\bing-logo-home.png" />
     <Content Include="Content\Image\BingWallpaper.jpg" />
+    <Content Include="Content\Image\bing_favicon.ico" />
     <Content Include="Content\Image\search-icon.png" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\External\bootstrap.js" />
+    <Content Include="Scripts\External\bootstrap.min.js" />
     <Content Include="Scripts\External\angular-animate.js" />
     <Content Include="Scripts\External\angular-animate.min.js" />
     <Content Include="Scripts\External\angular-aria.js" />
@@ -987,7 +988,7 @@
     <Content Include="Scripts\External\jquery.validate.min.js" />
     <Content Include="Scripts\External\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\External\jquery.validate.unobtrusive.min.js" />
-    <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\External\modernizr-2.6.2.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
