@@ -126,6 +126,8 @@ BingApp.controller('WebController', ['$scope', '$location', '$rootScope', '$time
             $timeout(function () {
                 $rootScope.$broadcast('getSearchKeyword', { item: keyword });
             }, 100);
+        } else {
+            $location.path('/').search('');
         }
     };
 
@@ -161,6 +163,8 @@ BingApp.controller('ImagesController', ['$scope', '$location', '$rootScope', '$t
                 $timeout(function () {
                     $rootScope.$broadcast('getImageKeyword', { item: keyword });
                 }, 100);
+            } else {
+                $location.path(path).search('');
             }
         };
 
@@ -176,6 +180,31 @@ BingApp.controller('ImagesController', ['$scope', '$location', '$rootScope', '$t
         $scope.closeImageOverlay = function () {
             $scope.showOverlay = false;
         };
+    }]);
+
+BingApp.controller('VideosController', ['$scope', '$location', '$rootScope', '$timeout',
+    function VideosController($scope, $location, $rootScope, $timeout) {
+
+    }]);
+
+BingApp.controller('MapsController', ['$scope', '$location', '$rootScope', '$timeout',
+    function MapsController($scope, $location, $rootScope, $timeout) {
+
+    }]);
+
+BingApp.controller('NewsController', ['$scope', '$location', '$rootScope', '$timeout',
+    function NewsController($scope, $location, $rootScope, $timeout) {
+
+    }]);
+
+BingApp.controller('ExploreController', ['$scope', '$location', '$rootScope', '$timeout',
+    function ExploreController($scope, $location, $rootScope, $timeout) {
+
+    }]);
+
+BingApp.controller('HistoryController', ['$scope', '$location', '$rootScope', '$timeout',
+    function HistoryController($scope, $location, $rootScope, $timeout) {
+
     }]);
 
 /* Auto focus on input search box */
