@@ -14,22 +14,40 @@
     <header id="header">
         <a href="/"><img src="~/Content/Image/Bing-icon.png" /></a>
         <div class="headerNav">
-            <a ng-class="{active:isActive('/search')}" href="/search">Web</a>
-            <a ng-class="{active:isActive('/images')}" ng-mouseover="mouseOverNav('images')" ng-mouseleave="mouseLeaveNav()" href="/images">Images</a>
-            <a ng-class="{active:isActive('/videos')}" ng-mouseover="mouseOverNav('videos')" ng-mouseleave="mouseLeaveNav()" href="/videos">Videos</a>
-            <a ng-class="{active:isActive('/maps')}" href="/maps">Maps</a>
-            <a ng-class="{active:isActive('/news')}" ng-mouseover="mouseOverNav('news')" ng-mouseleave="mouseLeaveNav()" href="/news">News</a>
-            <a ng-class="{active:isActive('/explore')}" href="/explore">Explore</a>
-            <a ng-class="{active:isActive('/history')}" href="/history">Search History</a>
-            <div style="color: #acacac;">|</div>
+            <a ng-show="showWeb" class="ng-hide" ng-class="{active:isActive('/search')}" href="/search">
+                <span>Web</span></a>
+            <a ng-class="{active:isActive('/images')}" ng-mouseover="mouseOverNav('/images')" ng-mouseleave="mouseLeaveNav()" href="/images">
+                <span>Images</span>
+            </a>
+            <a ng-class="{active:isActive('/videos')}" ng-mouseover="mouseOverNav('/videos')" ng-mouseleave="mouseLeaveNav()" href="/videos">
+                <span>Videos</span>
+            </a>
+            <a ng-class="{active:isActive('/news')}" ng-mouseover="mouseOverNav('/news')" ng-mouseleave="mouseLeaveNav()" href="/news">
+                <span>News</span>
+            </a>
+            <a ng-class="{active:isActive('/maps')}" href="/maps">
+                <span>Maps</span>
+            </a>
+            <a ng-class="{active:isActive('/explore')}" href="/explore">
+                <span>Explore</span>
+            </a>
+            <a ng-class="{active:isActive('/history')}" href="/history">
+                <span>Search History</span>
+            </a>
+            <div style="color: #acacac; line-height: 78px;">|</div>
             <a target="_blank" href="https://www.msn.com">MSN</a>
             <a target="_blank" href="https://www.office.com">Office Online</a>
             <a target="_blank" href="https://www.outlook.com">Outlook.com</a>
         </div>
         <div class="headerUser"></div>
     </header>
-    <nav ng-show="showNav" class="ng-hide">
-
+    <nav ng-show="showNav" class="ng-hide" ng-mouseover="mouseOverSubnav()" ng-mouseleave="mouseLeaveSubnav()">
+        <div class="subnavLinkContainer" ng-repeat="link in subnavs">
+            <div class="subnavLink" ng-click="goTo(route, link.keyword)">
+                {{link.text}}
+            </div>
+            <span>|</span>
+        </div>
     </nav>
     <div id="bingContainer" ng-view></div>
     <footer>&copy; 2016 Authorized by Chong Wang</footer>

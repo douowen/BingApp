@@ -1,22 +1,111 @@
 ﻿var BingApp = angular.module('BingApp', ['ngRoute']);
 
-BingApp.controller('BingShareController', ['$scope', '$location', function BingShareController($scope, $location) {
-    $scope.title = 'Bing';
-    $scope.showNav = false;
-    $scope.isActive = function (route) {
-        return route === $location.path();
+BingApp.service('eventService', ['$rootScope', function (rootScope) {
+    this.broadcastEvent = function (evt, args) {
+        args ? rootScope.$broadcast(evt, angular.copy(args)) : rootScope.$broadcast(evt, args);
     };
-    console.log($scope.showNav);
-    $scope.mouseOverNav = function (arg) {
-        $scope.showNav = true;
-    }
 
-    $scope.mouseLeaveNav = function () {
-        $scope.showNav = false;
-    }
-
-    $location.path('/').search('');
+    this.emitEvent = function (evt, args) {
+        args ? rootScope.$emit(evt, angular.copy(args)) : rootScope.$emit(evt, args);
+    };
 }]);
+
+BingApp.controller('BingShareController', ['$scope', '$location', '$timeout', 'eventService',
+    function BingShareController($scope, $location, $timeout, eventService) {
+        $location.path('/').search('');
+        $scope.title = 'Bing';
+        $scope.showWeb = false;
+        $scope.showNav = false;
+        $scope.subnavs = [];
+        $scope.route = '';
+
+
+        $scope.isActive = function (route) {
+            return route === $location.path();
+        };
+    
+        $scope.$on('toggleWebNav', function (event, arg) {
+            if (arg.show)
+                $scope.showWeb = true;
+            else
+                $scope.showWeb = false;
+        });
+
+        $scope.mouseOverNav = function (arg) {
+            $scope.showNav = true;
+            $scope.route = arg;
+            switch (arg) {
+                case '/images':
+                    $scope.subnavs = [
+                        {
+                            text: 'Search for national parks',
+                            keyword: 'national parks'
+                        },
+                        {
+                            text: 'Search for funny GIFs',
+                            keyword: 'funny facts'
+                        }
+                    ];
+                    break;
+                case '/videos':
+                    $scope.subnavs = [
+                        {
+                            text: 'Top music videos',
+                            keyword: 'top music videos'
+                        },
+                        {
+                            text: 'In theater movies',
+                            keyword: 'in theater movies'
+                        },
+                        {
+                            text: 'Most watched TV shows',
+                            keyword: 'most watched tv shows'
+                        }
+
+                    ];
+                    break;
+                case '/news':
+                    $scope.subnavs = [
+                        {
+                            text: 'Search local news',
+                            keyword: 'local'
+                        },
+                        {
+                            text: 'Search US news',
+                            keyword: 'US'
+                        },
+                        {
+                            text: 'Find entertainmant news',
+                            keyword: 'entertainment'
+                        }
+                    ];
+                    break;
+            }
+        }
+
+        $scope.mouseLeaveNav = function () {
+            $scope.showNav = false;
+        };
+
+        $scope.mouseOverSubnav = function () {
+            $scope.showNav = true;
+        };
+
+        $scope.mouseLeaveSubnav = function () {
+            $scope.showNav = false;
+            $scope.subnavs = [];
+        };
+
+        $scope.goTo = function (route, keyword) {
+            switch (route) {
+                case '/images':
+                    eventService.broadcastEvent('triggerSearchImages', { route: route, keyword: keyword });
+                    break;
+            }
+        };
+
+        
+    }]);
 
 BingApp.config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
     $locationProvider.hashPrefix('!').html5Mode(true);
@@ -55,44 +144,48 @@ BingApp.config(['$routeProvider', '$locationProvider', function ($routeProvider,
     });
 }]);
 
-BingApp.controller('HomeController', ['$scope', '$location', '$rootScope', '$timeout',
-    function HomeController($scope, $location, $rootScope, $timeout) {
-    var afterFirstClick = false;
-    $scope.showOverlay = false;
-    $scope.searchItem = "";
-    $scope.goSearch = function (keyword, path) {
-        if (keyword.length > 0) {
-            $scope.searchItem = angular.copy(keyword);
-            $timeout(function () {
-                $rootScope.$broadcast('getSearchKeyword', { item: keyword });
-            }, 100);
-            $location.path(path).search({ keyword: keyword });
-        }
-    };
-
-    $scope.clickInput = function () {
-        afterFirstClick = true;
-        $scope.showOverlay = true;
-    };
-
-    $scope.focusInput = function () {
-        if (afterFirstClick) {
-            $scope.showOverlay = true;
-        }
-    };
-
-    $scope.blurInput = function () {
+BingApp.controller('HomeController', ['$scope', '$location', '$timeout', 'eventService',
+    function HomeController($scope, $location, $timeout, eventService) {
+        var afterFirstClick = false;
+        eventService.emitEvent('toggleWebNav', { show: false });
         $scope.showOverlay = false;
-    };
+        $scope.searchItem = "";
+
+        $scope.goSearch = function (keyword, path) {
+            if (keyword.length > 0) {
+                $scope.searchItem = angular.copy(keyword);
+                $timeout(function () {
+                    eventService.broadcastEvent('getSearchKeyword', { item: keyword });
+                }, 100);
+                $location.path(path).search({ keyword: keyword });
+            }
+        };
+
+        $scope.clickInput = function () {
+            afterFirstClick = true;
+            $scope.showOverlay = true;
+        };
+
+        $scope.focusInput = function () {
+            if (afterFirstClick) {
+                $scope.showOverlay = true;
+            }
+        };
+
+        $scope.blurInput = function () {
+            $scope.showOverlay = false;
+        };
     
 }]);
 
-BingApp.controller('WebController', ['$scope', '$location', '$rootScope', '$timeout', 'WebResultService',
-    function WebController($scope, $location, $rootScope, $timeout, WebResultService) {
+BingApp.controller('WebController', ['$scope', '$location', '$timeout', 'WebResultService', 'eventService',
+    function WebController($scope, $location, $timeout, WebResultService, eventService) {
         //Get searchResults data by calling the http get function in WebResultService
         //WebResultService.getWebSearchResults(args, function (response) {
         //    $scope.searchResults = response.data;
         //});
+        eventService.emitEvent('toggleWebNav', { show: true });
+
         $scope.showResults = false;
 
         $scope.searchResults = [
@@ -115,7 +208,7 @@ BingApp.controller('WebController', ['$scope', '$location', '$rootScope', '$time
 
         ];
 
-    $rootScope.$on('getSearchKeyword', function (event, args) {
+    $scope.$on('getSearchKeyword', function (event, args) {
         $scope.keyword = args.item;
         $scope.showResults = true;
     });
@@ -124,7 +217,7 @@ BingApp.controller('WebController', ['$scope', '$location', '$rootScope', '$time
         if (keyword.length > 0) {
             $location.path(path).search({ keyword: keyword });
             $timeout(function () {
-                $rootScope.$broadcast('getSearchKeyword', { item: keyword });
+                eventService.broadcastEvent('getSearchKeyword', { item: keyword });
             }, 100);
         } else {
             $location.path('/').search('');
@@ -136,8 +229,8 @@ BingApp.controller('WebController', ['$scope', '$location', '$rootScope', '$time
     };
 }]);
 
-BingApp.controller('ImagesController', ['$scope', '$location', '$rootScope', '$timeout',
-    function ImagesController($scope, $location, $rootScope, $timeout) {
+BingApp.controller('ImagesController', ['$scope', '$location', '$timeout', 'eventService',
+    function ImagesController($scope, $location, $timeout, eventService) {
         $scope.showResults = false;
         $scope.detailImageSrc = "";
         $scope.showOverlay = false;
@@ -152,16 +245,23 @@ BingApp.controller('ImagesController', ['$scope', '$location', '$rootScope', '$t
                 src: '/Content/Image/imageSample3.jpg'
             }
         ];
+
+        eventService.emitEvent('toggleWebNav', { show: true });
+
         $scope.$on('getImageKeyword', function (event, args) {
             $scope.keyword = args.item;
             $scope.showResults = true;
+        });
+
+        $scope.$on('triggerSearchImages', function (event, args) {
+            $scope.goSearch(args.keyword, args.route);
         });
 
         $scope.goSearch = function (keyword, path) {
             if (keyword.length > 0) {
                 $location.path(path).search({ keyword: keyword });
                 $timeout(function () {
-                    $rootScope.$broadcast('getImageKeyword', { item: keyword });
+                    eventService.broadcastEvent('getImageKeyword', { item: keyword });
                 }, 100);
             } else {
                 $location.path(path).search('');
@@ -182,28 +282,28 @@ BingApp.controller('ImagesController', ['$scope', '$location', '$rootScope', '$t
         };
     }]);
 
-BingApp.controller('VideosController', ['$scope', '$location', '$rootScope', '$timeout',
-    function VideosController($scope, $location, $rootScope, $timeout) {
-
+BingApp.controller('VideosController', ['$scope', '$location', '$timeout', 'eventService',
+    function VideosController($scope, $location, $timeout, eventService) {
+        eventService.emitEvent('toggleWebNav', { show: true });
     }]);
 
-BingApp.controller('MapsController', ['$scope', '$location', '$rootScope', '$timeout',
-    function MapsController($scope, $location, $rootScope, $timeout) {
-
+BingApp.controller('MapsController', ['$scope', '$location', '$timeout', 'eventService',
+    function MapsController($scope, $location, $timeout, eventService) {
+        eventService.emitEvent('toggleWebNav', { show: true });
     }]);
 
-BingApp.controller('NewsController', ['$scope', '$location', '$rootScope', '$timeout',
-    function NewsController($scope, $location, $rootScope, $timeout) {
-
+BingApp.controller('NewsController', ['$scope', '$location', '$timeout', 'eventService',
+    function NewsController($scope, $location, $timeout, eventService) {
+        eventService.emitEvent('toggleWebNav', { show: true });
     }]);
 
-BingApp.controller('ExploreController', ['$scope', '$location', '$rootScope', '$timeout',
-    function ExploreController($scope, $location, $rootScope, $timeout) {
-
+BingApp.controller('ExploreController', ['$scope', '$location', '$timeout', 'eventService',
+    function ExploreController($scope, $location, $timeout, eventService) {
+        eventService.emitEvent('toggleWebNav', { show: true });
     }]);
 
-BingApp.controller('HistoryController', ['$scope', '$location', '$rootScope', '$timeout',
-    function HistoryController($scope, $location, $rootScope, $timeout) {
+BingApp.controller('HistoryController', ['$scope', '$location', '$timeout',
+    function HistoryController($scope, $location, $timeout) {
 
     }]);
 
@@ -232,7 +332,6 @@ BingApp.directive('hitEnter', function () {
     };
 });
 
-/* Bing App Services */
 /* I made the fake service for the sake of getting search results json data by calling http get to
    specific API functions*/
 BingApp.service('WebResultService', ['$http', function WebResultService($http) {

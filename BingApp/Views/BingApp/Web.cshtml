@@ -1,4 +1,4 @@
-﻿<div id="bingWeb" class="homeSearchContainer">
+﻿<div id="bingWeb" class="homeSearchContainer" ng-controller="WebController">
     <img ng-click="goHome()" class="bing-home-icon" src="/Content/Image/bing-logo-home.png" alt="home search" />
     <input type="search" class="home-search-box" hit-enter="goSearch(keyword, '/search')" ng-model="keyword" autofocus />
     <img ng-click="goSearch(keyword, '/search')" src="/Content/Image/search-icon.png" alt="search icon" class="home-search-icon" />
