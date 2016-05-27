@@ -104,13 +104,15 @@ BingApp.controller('BingShareController', ['$scope', '$location', '$timeout', 'e
                     }
                     $timeout(function (e) {
                         eventService.broadcastEvent('getImageKeyword', { item: keyword });
-                    }, 100)
+                    }, 100);
                     break;
                 case '/videos':
                     if ($route.current.loadedTemplateUrl !== "bingApp/videos") {
                         $location.path('/videos');
                     }
-                    eventService.broadcastEvent('getVideoKeyword', { item: keyword });
+                    $timeout(function (e) {
+                        eventService.broadcastEvent('getVideoKeyword', { item: keyword });
+                    }, 100);
             }
         };
 
@@ -291,6 +293,27 @@ BingApp.controller('ImagesController', ['$scope', '$location', '$timeout', 'even
 BingApp.controller('VideosController', ['$scope', '$location', '$timeout', 'eventService',
     function VideosController($scope, $location, $timeout, eventService) {
         eventService.emitEvent('toggleWebNav', { show: true });
+        $scope.showResults = false;
+
+        $scope.$on('getVideoKeyword', function (event, args) {
+            $scope.keyword = args.item;
+            $scope.showResults = true;
+        });
+
+        $scope.goSearch = function (keyword, path) {
+            if (keyword.length > 0) {
+                $location.path(path).search({ keyword: keyword });
+                $timeout(function () {
+                    eventService.broadcastEvent('getVideoKeyword', { item: keyword });
+                }, 100);
+            } else {
+                $location.path(path).search('');
+            }
+        };
+
+        $scope.goHome = function () {
+            $location.path('/').search('');
+        };
     }]);
 
 BingApp.controller('MapsController', ['$scope', '$location', '$timeout', 'eventService',

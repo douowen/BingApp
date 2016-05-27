@@ -1,5 +1,12 @@
-﻿<div class="homeSearchContainer" ng-controller="VideosController">
-    <img class="bing-home-icon" src="/Content/Image/bing-logo-home.png" alt="home search" />
-    <input type="search" class="home-search-box" autofocus/>
-    <img src="/Content/Image/search-icon.png" alt="search icon" class="home-search-icon" />
+﻿<div id="bingVideos" ng-controller="VideosController">
+    <div class="homeSearchContainer" ng-controller="VideosController">
+        <img class="bing-home-icon" src="/Content/Image/bing-logo-home.png" alt="home search" />
+        <input ng-model="keyword" type="search" class="home-search-box" hit-enter="goSearch(keyword, '/videos')" autofocus />
+        <img ng-click="goSearch(keyword, '/videos')" src="/Content/Image/search-icon.png" alt="search icon" class="home-search-icon" />
+    </div>
+    <div class="sharedContentContainer ng-hide" ng-show="showResults">
+        
+    </div>
 </div>
+
+
