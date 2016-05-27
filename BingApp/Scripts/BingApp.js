@@ -100,7 +100,7 @@ BingApp.controller('BingShareController', ['$scope', '$location', '$timeout', 'e
             switch (route) {
                 case '/images':
                     if ($route.current.loadedTemplateUrl !== "bingApp/images") {
-                        $location.path('/images');
+                        $location.path('/images').search(keyword);
                     }
                     $timeout(function (e) {
                         eventService.broadcastEvent('getImageKeyword', { item: keyword });
@@ -108,7 +108,7 @@ BingApp.controller('BingShareController', ['$scope', '$location', '$timeout', 'e
                     break;
                 case '/videos':
                     if ($route.current.loadedTemplateUrl !== "bingApp/videos") {
-                        $location.path('/videos');
+                        $location.path('/videos').search(keyword);
                     }
                     $timeout(function (e) {
                         eventService.broadcastEvent('getVideoKeyword', { item: keyword });
