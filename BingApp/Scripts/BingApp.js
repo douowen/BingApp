@@ -10,8 +10,8 @@ BingApp.service('eventService', ['$rootScope', function (rootScope) {
     };
 }]);
 
-BingApp.controller('BingShareController', ['$scope', '$location', '$timeout', 'eventService',
-    function BingShareController($scope, $location, $timeout, eventService) {
+BingApp.controller('BingShareController', ['$scope', '$location', '$timeout', 'eventService', '$route',
+    function BingShareController($scope, $location, $timeout, eventService, $route) {
         $location.path('/').search('');
         $scope.title = 'Bing';
         $scope.showWeb = false;
@@ -99,8 +99,18 @@ BingApp.controller('BingShareController', ['$scope', '$location', '$timeout', 'e
         $scope.goTo = function (route, keyword) {
             switch (route) {
                 case '/images':
-                    eventService.broadcastEvent('triggerSearchImages', { route: route, keyword: keyword });
+                    if ($route.current.loadedTemplateUrl !== "bingApp/images") {
+                        $location.path('/images');
+                    }
+                    $timeout(function (e) {
+                        eventService.broadcastEvent('getImageKeyword', { item: keyword });
+                    }, 100)
                     break;
+                case '/videos':
+                    if ($route.current.loadedTemplateUrl !== "bingApp/videos") {
+                        $location.path('/videos');
+                    }
+                    eventService.broadcastEvent('getVideoKeyword', { item: keyword });
             }
         };
 
@@ -251,10 +261,6 @@ BingApp.controller('ImagesController', ['$scope', '$location', '$timeout', 'even
         $scope.$on('getImageKeyword', function (event, args) {
             $scope.keyword = args.item;
             $scope.showResults = true;
-        });
-
-        $scope.$on('triggerSearchImages', function (event, args) {
-            $scope.goSearch(args.keyword, args.route);
         });
 
         $scope.goSearch = function (keyword, path) {
