@@ -9,7 +9,6 @@ BingApp.service('eventService', ['$rootScope', function (rootScope) {
 BingApp.controller('BingShareController', ['$scope', '$location', '$timeout', 'eventService', '$route',
     function BingShareController($scope, $location, $timeout, eventService, $route) {
         $location.path('/').search('');
-        $scope.title = 'Bing';
         $scope.showWeb = false;
         $scope.showNav = false;
         $scope.subnavs = [];
