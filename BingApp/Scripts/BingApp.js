@@ -4,10 +4,6 @@ BingApp.service('eventService', ['$rootScope', function (rootScope) {
     this.broadcastEvent = function (evt, args) {
         args ? rootScope.$broadcast(evt, angular.copy(args)) : rootScope.$broadcast(evt, args);
     };
-
-    this.emitEvent = function (evt, args) {
-        args ? rootScope.$emit(evt, angular.copy(args)) : rootScope.$emit(evt, args);
-    };
 }]);
 
 BingApp.controller('BingShareController', ['$scope', '$location', '$timeout', 'eventService', '$route',
@@ -25,10 +21,12 @@ BingApp.controller('BingShareController', ['$scope', '$location', '$timeout', 'e
         };
     
         $scope.$on('toggleWebNav', function (event, arg) {
-            if (arg.show)
+            if (arg.show) {
+                console.log("testwebnav");
                 $scope.showWeb = true;
-            else
+            } else {
                 $scope.showWeb = false;
+            } 
         });
 
         $scope.mouseOverNav = function (arg) {
@@ -115,8 +113,6 @@ BingApp.controller('BingShareController', ['$scope', '$location', '$timeout', 'e
                     }, 100);
             }
         };
-
-        
     }]);
 
 BingApp.config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
@@ -159,7 +155,7 @@ BingApp.config(['$routeProvider', '$locationProvider', function ($routeProvider,
 BingApp.controller('HomeController', ['$scope', '$location', '$timeout', 'eventService',
     function HomeController($scope, $location, $timeout, eventService) {
         var afterFirstClick = false;
-        eventService.emitEvent('toggleWebNav', { show: false });
+        eventService.broadcastEvent('toggleWebNav', { show: false });
         $scope.showOverlay = false;
         $scope.searchItem = "";
 
@@ -196,7 +192,7 @@ BingApp.controller('WebController', ['$scope', '$location', '$timeout', 'WebResu
         //WebResultService.getWebSearchResults(args, function (response) {
         //    $scope.searchResults = response.data;
         //});
-        eventService.emitEvent('toggleWebNav', { show: true });
+        eventService.broadcastEvent('toggleWebNav', { show: true });
 
         $scope.showResults = false;
 
@@ -258,7 +254,7 @@ BingApp.controller('ImagesController', ['$scope', '$location', '$timeout', 'even
             }
         ];
 
-        eventService.emitEvent('toggleWebNav', { show: true });
+        eventService.broadcastEvent('toggleWebNav', { show: true });
 
         $scope.$on('getImageKeyword', function (event, args) {
             $scope.keyword = args.item;
@@ -292,7 +288,7 @@ BingApp.controller('ImagesController', ['$scope', '$location', '$timeout', 'even
 
 BingApp.controller('VideosController', ['$scope', '$location', '$timeout', 'eventService',
     function VideosController($scope, $location, $timeout, eventService) {
-        eventService.emitEvent('toggleWebNav', { show: true });
+        eventService.broadcastEvent('toggleWebNav', { show: true });
         $scope.showResults = false;
 
         $scope.$on('getVideoKeyword', function (event, args) {
@@ -318,17 +314,17 @@ BingApp.controller('VideosController', ['$scope', '$location', '$timeout', 'even
 
 BingApp.controller('MapsController', ['$scope', '$location', '$timeout', 'eventService',
     function MapsController($scope, $location, $timeout, eventService) {
-        eventService.emitEvent('toggleWebNav', { show: true });
+        eventService.broadcastEvent('toggleWebNav', { show: true });
     }]);
 
 BingApp.controller('NewsController', ['$scope', '$location', '$timeout', 'eventService',
     function NewsController($scope, $location, $timeout, eventService) {
-        eventService.emitEvent('toggleWebNav', { show: true });
+        eventService.broadcastEvent('toggleWebNav', { show: true });
     }]);
 
 BingApp.controller('ExploreController', ['$scope', '$location', '$timeout', 'eventService',
     function ExploreController($scope, $location, $timeout, eventService) {
-        eventService.emitEvent('toggleWebNav', { show: true });
+        eventService.broadcastEvent('toggleWebNav', { show: true });
     }]);
 
 BingApp.controller('HistoryController', ['$scope', '$location', '$timeout',
